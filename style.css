@@ -1,0 +1,56 @@
+body {
+    background-color: #000;
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    padding-top: 50px;
+}
+
+.container {
+    width: 350px;
+    background-color: #8B0000; /* Merah Marun */
+    padding: 20px;
+    border-radius: 30px;
+    text-align: center;
+    color: white;
+    border: 5px solid #1a1a1a;
+}
+
+.logo {
+    width: 80px;
+    border-radius: 50%;
+    margin: 10px 0;
+}
+
+.form-card {
+    background-color: #f8d7da; /* Warna pink soft untuk area input */
+    padding: 20px;
+    border-radius: 20px;
+    color: #8B0000;
+}
+
+input, select {
+    width: 100%;
+    margin: 10px 0;
+    padding: 10px;
+    border: none;
+    border-bottom: 2px solid #8B0000;
+    background: transparent;
+    outline: none;
+}
+
+.btn-simpan {
+    background-color: #e9ecef;
+    color: #8B0000;
+    border: none;
+    padding: 10px 40px;
+    border-radius: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+.btn-simpan:hover {
+    background-color: #8B0000;
+    color: white;
+}
