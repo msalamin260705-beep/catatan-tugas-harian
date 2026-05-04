@@ -1,13 +1,13 @@
 <?php
-$host = "localhost";
-$user = "root";
-$pass = "";
-$db   = "db_tugas_mhs";
-
-$conn = mysqli_connect($host, $user, $pass, $db);
-
-if (!$conn) {
-    die("Koneksi gagal: " . mysqli_connect_error());
-}
 session_start();
+$conn = mysqli_connect("localhost", "root", "", "db_tugas_mahasiswa");
+
+// Cek apakah data identitas sudah diisi
+$check = mysqli_query($conn, "SELECT * FROM identitas LIMIT 1");
+$user_exists = mysqli_num_rows($check) > 0;
+
+if (!$user_exists && basename($_SERVER['PHP_SELF']) != 'identitas.php' && basename($_SERVER['PHP_SELF']) != 'simpan.php') {
+    header("Location: identitas.php");
+    exit();
+}
 ?>

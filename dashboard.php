@@ -65,7 +65,6 @@
         <a href="logout.php" class="logout-link">🚪 Logout</a>
     </div>
 
-    <!-- Overlay untuk menutup sidebar saat diklik di luar area -->
     <div id="overlay" onclick="toggleMenu()"></div>
 
     <script>
