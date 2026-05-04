@@ -2,11 +2,12 @@
 $host = "localhost";
 $user = "root";
 $pass = "";
-$db   = "db_tugas_mahasiswa";
+$db   = "db_tugas_mhs";
 
 $conn = mysqli_connect($host, $user, $pass, $db);
 
 if (!$conn) {
     die("Koneksi gagal: " . mysqli_connect_error());
 }
+session_start();
 ?>

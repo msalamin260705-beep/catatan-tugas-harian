@@ -1,56 +1,233 @@
-body {
-    background-color: #000;
-    font-family: Arial, sans-serif;
+/* Pengaturan Dasar */
+* {
+    box-sizing: border-box;
+}
+
+body { 
+    background: #000; 
+    color: white; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    font-family: 'Segoe UI', Arial, sans-serif; 
+}
+
+/* Bingkai Mobile */
+.card-mobile { 
+    width: 350px; 
+    height: 650px; 
+    background: linear-gradient(180deg, #8B0000 0%, #4a0000 100%); 
+    border-radius: 40px; 
+    border: 8px solid #222; 
+    position: relative; 
+    padding: 20px; 
+    overflow: hidden; /* Mengunci agar sidebar tidak merusak layout */
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+}
+
+/* Bagian Header Dashboard */
+.header-inline {
     display: flex;
-    justify-content: center;
-    padding-top: 50px;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
 }
 
-.container {
-    width: 350px;
-    background-color: #8B0000; /* Merah Marun */
-    padding: 20px;
-    border-radius: 30px;
-    text-align: center;
-    color: white;
-    border: 5px solid #1a1a1a;
-}
-
-.logo {
-    width: 80px;
-    border-radius: 50%;
-    margin: 10px 0;
-}
-
-.form-card {
-    background-color: #f8d7da; /* Warna pink soft untuk area input */
-    padding: 20px;
-    border-radius: 20px;
-    color: #8B0000;
-}
-
-input, select {
-    width: 100%;
-    margin: 10px 0;
-    padding: 10px;
-    border: none;
-    border-bottom: 2px solid #8B0000;
-    background: transparent;
-    outline: none;
-}
-
-.btn-simpan {
-    background-color: #e9ecef;
-    color: #8B0000;
-    border: none;
-    padding: 10px 40px;
-    border-radius: 20px;
-    font-weight: bold;
+.menu-icon {
+    font-size: 24px;
     cursor: pointer;
-    margin-top: 20px;
+}
+
+.user-name {
+    margin: 0;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.profile-mini img {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    border: 2px solid white;
+}
+
+/* Identitas & Form */
+.logo-circular { 
+    width: 80px; 
+    display: block; 
+    margin: 0 auto 15px; 
+    border-radius: 50%; 
+    border: 3px solid white;
+}
+
+.form-container { 
+    background: #f8d7da; 
+    border-radius: 25px; 
+    padding: 20px; 
+    color: #8B0000; 
+    margin-top: 15px;
+}
+
+input, select, textarea { 
+    width: 100%; 
+    border: none; 
+    border-bottom: 2px solid #8B0000; 
+    background: transparent; 
+    margin: 10px 0; 
+    padding: 8px 5px; 
+    outline: none;
+    color: #8B0000;
+}
+
+.btn-simpan { 
+    background: #8B0000; 
+    color: white; 
+    border: none; 
+    width: 100%; 
+    padding: 12px; 
+    border-radius: 25px; 
+    font-weight: bold; 
+    cursor: pointer;
+    margin-top: 10px;
+    transition: 0.3s;
 }
 
 .btn-simpan:hover {
-    background-color: #8B0000;
+    background: #4a0000;
+}
+
+/* List Mata Kuliah & Tugas */
+.content {
+    height: 80%;
+    overflow-y: auto;
+    padding-right: 5px;
+}
+
+.item-card {
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 20px;
+    padding: 15px;
+    margin-bottom: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+.card-link {
+    text-decoration: none;
     color: white;
+}
+
+.card-info strong {
+    font-size: 16px;
+    display: block;
+}
+
+.card-info p {
+    margin: 5px 0;
+    font-size: 12px;
+    opacity: 0.8;
+}
+
+.card-arrow {
+    font-size: 18px;
+    opacity: 0.5;
+}
+
+/* Tombol Tambah (+) */
+.fab { 
+    position: absolute; 
+    bottom: 30px; 
+    right: 30px; 
+    background: #fff; 
+    color: #8B0000; 
+    width: 50px; 
+    height: 50px; 
+    border-radius: 50%; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    text-decoration: none; 
+    font-weight: bold;
+    font-size: 24px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    z-index: 10;
+}
+
+/* Sidebar */
+.sidebar {
+    position: absolute; 
+    left: -250px; 
+    top: 0; 
+    width: 250px; 
+    height: 100%;
+    background: #1a1a1a; 
+    transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1); 
+    padding: 30px 20px;
+    z-index: 100;
+    box-shadow: 10px 0 30px rgba(0,0,0,0.5);
+}
+
+.sidebar.active { 
+    left: 0; 
+}
+
+.sidebar-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.sidebar-logo {
+    width: 60px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+}
+
+.sidebar a { 
+    color: #ccc; 
+    display: block; 
+    padding: 12px 15px;
+    margin-bottom: 10px; 
+    text-decoration: none; 
+    border-radius: 10px;
+    transition: 0.3s;
+}
+
+.sidebar a:hover {
+    background: #8B0000;
+    color: white;
+}
+
+.logout-link {
+    margin-top: 50px;
+    color: #ff4d4d !important;
+}
+
+/* Overlay saat Sidebar Aktif */
+#overlay {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.6);
+    z-index: 90;
+}
+
+#overlay.active {
+    display: block;
+}
+
+/* Scrollbar Custom */
+.content::-webkit-scrollbar {
+    width: 5px;
+}
+.content::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.2);
+    border-radius: 10px;
 }
