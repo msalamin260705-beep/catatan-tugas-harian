@@ -1,33 +1,53 @@
-<?php 
-include 'koneksi.php';
-if(!isset($_SESSION['user_id'])) header("location: index.php");
-$uid = $_SESSION['user_id'];
+<?php
 
-// Ambil data tugas
-$tugas = mysqli_query($conn, "SELECT * FROM list_tugas WHERE user_id = '$uid'");
+include 'middleware/auth.php';
+
 ?>
+
 <!DOCTYPE html>
 <html>
 <head>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <div class="mobile-frame">
-        <div style="display: flex; justify-content: space-between;">
-            <a href="profil.php" style="color:white; text-decoration:none">☰ Profil</a>
-            <span>Halo, <?php echo $_SESSION['nama']; ?></span>
-        </div>
-        
-        <h3 style="margin-top:30px;">Tugas Kamu</h3>
-        
-        <?php while($row = mysqli_fetch_array($tugas)){ ?>
-            <div class="task-item">
-                <strong><?php echo $row['judul_tugas']; ?></strong><br>
-                <small>Deadline: <?php echo $row['deadline']; ?></small>
-            </div>
-        <?php } ?>
 
-        <a href="tambah_tugas.php" class="fab">+</a>
+    <title>Dashboard</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    rel="stylesheet">
+
+</head>
+
+<body class="bg-light">
+
+<div class="container mt-5">
+
+    <div class="card shadow">
+
+        <div class="card-body">
+
+            <h1>Selamat Datang</h1>
+
+            <hr>
+
+            <h3>
+                <?php echo $_SESSION['nama']; ?>
+            </h3>
+
+            <h5>
+                Role:
+                <?php echo $_SESSION['role']; ?>
+            </h5>
+
+            <a href="logout.php"
+            class="btn btn-danger mt-3">
+
+                Logout
+
+            </a>
+
+        </div>
+
     </div>
+
+</div>
+
 </body>
 </html>
