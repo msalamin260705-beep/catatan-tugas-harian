@@ -1,120 +1,231 @@
 <?php
 
 include '../middleware/auth.php';
-
-if($_SESSION['role'] != 'user'){
-
-    header("Location: ../login.php");
-    exit;
-
-}
-
 include '../config/koneksi.php';
 
-$today = date('Y-m-d');
+$id = $_SESSION['id'];
 
-$tugas = mysqli_query($conn,
+$user = mysqli_fetch_assoc(
+
+mysqli_query(
+
+$conn,
+
+"SELECT * FROM users
+WHERE id='$id'"
+
+)
+
+);
+
+$tugas = mysqli_num_rows(
+
+mysqli_query(
+
+$conn,
+
 "SELECT * FROM tugas
-WHERE deadline >= '$today'
-ORDER BY deadline ASC
-LIMIT 3");
+WHERE semester='".$user['semester']."'
+AND kelas='".$user['kelas']."'"
+
+)
+
+);
+
+include 'layout/header.php';
+include 'layout/sidebar.php';
 
 ?>
 
-<!DOCTYPE html>
-<html>
-<head>
+<h1 class="mb-4">
 
-    <title>Dashboard User</title>
+Dashboard Mahasiswa
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-    rel="stylesheet">
+</h1>
 
-    <link rel="stylesheet"
-href="../assets/css/style.css">
+<div class="row g-4">
 
-</head>
+<!-- Total Tugas -->
 
-<body class="bg-light">
+<div class="col-lg-4 col-md-6">
 
-<div class="container mt-5">
+<div class="card shadow h-100">
 
-    <div class="card shadow">
+<div class="card-body">
 
-        <div class="card-body">
+<h5 class="mb-3">
 
-            <h2>Dashboard Mahasiswa</h2>
+Total Tugas
 
-            <hr>
+</h5>
 
-            <h4>
+<h1>
 
-                Selamat datang,
+<?php echo $tugas; ?>
 
-                <?php echo $_SESSION['nama']; ?>
-
-            </h4>
-
-            <p>
-                Role:
-                <?php echo $_SESSION['role']; ?>
-            </p>
-
-            <a href="tugas.php"
-            class="btn btn-primary">
-
-                Lihat Tugas
-
-            </a>
-
-            <a href="profile.php"
-            class="btn btn-success">
-
-                Profile
-
-            </a>
-
-            <a href="../logout.php"
-            class="btn btn-danger">
-
-                Logout
-
-            </a>
-
-        </div>
-
-    </div>
-
-    <div class="card mt-4 shadow">
-
-        <div class="card-body">
-
-            <h4>Deadline Terdekat</h4>
-
-            <ul>
-
-            <?php while($row =
-            mysqli_fetch_assoc($tugas)){ ?>
-
-                <li>
-
-                    <?php echo $row['judul']; ?>
-
-                    -
-
-                    <?php echo $row['deadline']; ?>
-
-                </li>
-
-            <?php } ?>
-
-            </ul>
-
-        </div>
-
-    </div>
+</h1>
 
 </div>
 
-</body>
-</html>
+</div>
+
+</div>
+
+
+<!-- Semester -->
+
+<div class="col-lg-4 col-md-6">
+
+<div class="card shadow h-100">
+
+<div class="card-body">
+
+<h5 class="mb-3">
+
+Semester
+
+</h5>
+
+<h1>
+
+<?php echo $user['semester']; ?>
+
+</h1>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- Kelas -->
+
+<div class="col-lg-4 col-md-6">
+
+<div class="card shadow h-100">
+
+<div class="card-body">
+
+<h5 class="mb-3">
+
+Kelas
+
+</h5>
+
+<h1>
+
+<?php echo $user['kelas']; ?>
+
+</h1>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<hr class="my-4">
+
+<div class="card shadow">
+
+<div class="card-body">
+
+<h4 class="mb-3">
+
+Informasi Mahasiswa
+
+</h4>
+
+<table class="table">
+
+<tr>
+
+<th width="30%">
+
+Nama
+
+</th>
+
+<td>
+
+<?php echo $user['nama']; ?>
+
+</td>
+
+</tr>
+
+<tr>
+
+<th>
+
+NIM
+
+</th>
+
+<td>
+
+<?php echo $user['nim']; ?>
+
+</td>
+
+</tr>
+
+<tr>
+
+<th>
+
+Fakultas
+
+</th>
+
+<td>
+
+<?php echo $user['fakultas']; ?>
+
+</td>
+
+</tr>
+
+<tr>
+
+<th>
+
+Program Studi
+
+</th>
+
+<td>
+
+<?php echo $user['prodi']; ?>
+
+</td>
+
+</tr>
+
+<tr>
+
+<th>
+
+Kelas
+
+</th>
+
+<td>
+
+<?php echo $user['kelas']; ?>
+
+</td>
+
+</tr>
+
+</table>
+
+</div>
+
+</div>
+
+<?php include 'layout/footer.php'; ?>

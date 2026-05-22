@@ -3,21 +3,60 @@
 include '../middleware/auth.php';
 include '../config/koneksi.php';
 
-$data = mysqli_query($conn,
-"SELECT * FROM tugas");
+$user_id = $_SESSION['id'];
+
+/*
+Ambil data mahasiswa
+*/
+
+$user = mysqli_query(
+
+$conn,
+
+"SELECT
+semester,
+kelas
+FROM users
+WHERE id='$user_id'"
+
+);
+
+$userData = mysqli_fetch_assoc($user);
+
+/*
+Ambil tugas sesuai semester & kelas
+*/
+
+$data = mysqli_query(
+
+$conn,
+
+"SELECT *
+FROM tugas
+
+WHERE
+semester='".$userData['semester']."'
+AND
+kelas='".$userData['kelas']."'
+
+ORDER BY id DESC"
+
+);
 
 ?>
 
 <!DOCTYPE html>
+
 <html>
+
 <head>
 
-    <title>Tugas Mahasiswa</title>
+<title>Daftar Tugas</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-    rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+rel="stylesheet">
 
-    <link rel="stylesheet"
+<link rel="stylesheet"
 href="../assets/css/style.css">
 
 </head>
@@ -26,78 +65,184 @@ href="../assets/css/style.css">
 
 <div class="container mt-5">
 
-    <div class="card shadow">
+<div class="card shadow">
 
-        <div class="card-body">
+<div class="card-body">
 
-            <h2>Daftar Tugas</h2>
+<h2 class="mb-4">
 
-            <hr>
+Daftar Tugas Mahasiswa
 
-            <table class="table table-bordered table-striped">
+</h2>
 
-                <tr>
+<table
+class="table table-bordered table-striped">
 
-                    <th>No</th>
-                    <th>Judul</th>
-                    <th>Deskripsi</th>
-                    <th>Deadline</th>
-                    <th>Aksi</th>
+<tr>
 
-                </tr>
+<th>No</th>
 
-                <?php
-                $no = 1;
+<th>Judul</th>
 
-                while($row =
-                mysqli_fetch_assoc($data)){
-                ?>
+<th>Mata Kuliah</th>
 
-                <tr>
+<th>Deskripsi</th>
 
-                    <td><?php echo $no++; ?></td>
+<th>Semester</th>
 
-                    <td>
-                        <?php echo $row['judul']; ?>
-                    </td>
+<th>Kelas</th>
 
-                    <td>
-                        <?php echo $row['deskripsi']; ?>
-                    </td>
+<th>Deadline</th>
 
-                    <td>
-                        <?php echo $row['deadline']; ?>
-                    </td>
+<th>Aksi</th>
 
-                    <td>
+</tr>
 
-                        <a href="upload_tugas.php?id=<?php echo $row['id']; ?>"
-                        class="btn btn-primary btn-sm">
+<?php
 
-                            Upload Tugas
+$no=1;
 
-                        </a>
+while(
+$row=mysqli_fetch_assoc($data)
+){
 
-                    </td>
+?>
 
-                </tr>
+<tr>
 
-                <?php } ?>
+<td>
 
-            </table>
+<?php echo $no++; ?>
 
-            <a href="dashboard.php"
-            class="btn btn-secondary">
+</td>
 
-                Kembali
+<td>
 
-            </a>
+<?php echo htmlspecialchars($row['judul']); ?>
 
-        </div>
+</td>
 
-    </div>
+<td>
+
+<?php echo htmlspecialchars($row['mata_kuliah']); ?>
+
+</td>
+
+<td>
+
+<?php echo htmlspecialchars($row['deskripsi']); ?>
+
+</td>
+
+<td>
+
+Semester
+<?php echo htmlspecialchars($row['semester']); ?>
+
+</td>
+
+<td>
+
+<?php echo htmlspecialchars($row['kelas']); ?>
+
+</td>
+
+<td>
+
+<?php echo htmlspecialchars($row['deadline']); ?>
+
+<br>
+
+<?php
+
+if(
+date("Y-m-d")
+>
+$row['deadline']
+){
+
+?>
+
+<span class="badge bg-danger">
+
+Deadline Berakhir
+
+</span>
+
+<?php
+
+}else{
+
+?>
+
+<span class="badge bg-success">
+
+Masih Dibuka
+
+</span>
+
+<?php } ?>
+
+</td>
+
+<td>
+
+<?php
+
+if(
+date("Y-m-d")
+<=
+$row['deadline']
+){
+
+?>
+
+<a
+href="upload_tugas.php?id=<?php echo $row['id'];?>"
+class="btn btn-primary btn-sm">
+
+Upload
+
+</a>
+
+<?php
+
+}else{
+
+?>
+
+<button
+class="btn btn-secondary btn-sm"
+disabled>
+
+Ditutup
+
+</button>
+
+<?php } ?>
+
+</td>
+
+</tr>
+
+<?php } ?>
+
+</table>
+
+<a
+href="dashboard.php"
+class="btn btn-secondary">
+
+Kembali
+
+</a>
+
+</div>
+
+</div>
 
 </div>
 
 </body>
+
 </html>

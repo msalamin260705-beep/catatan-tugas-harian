@@ -1,79 +1,289 @@
 <?php
 
-session_start();
-
+include '../middleware/auth.php';
 include '../config/koneksi.php';
 
 $user_id = $_SESSION['id'];
 
 $tugas_id = $_POST['tugas_id'];
 
+/*
+Ambil data tugas
+*/
+
+$stmt = mysqli_prepare(
+$conn,
+"SELECT * FROM tugas
+WHERE id=?"
+);
+
+mysqli_stmt_bind_param(
+$stmt,
+"i",
+$tugas_id
+);
+
+mysqli_stmt_execute($stmt);
+
+$result = mysqli_stmt_get_result($stmt);
+
+$data_tugas = mysqli_fetch_assoc($result);
+
+if(!$data_tugas){
+
+    echo "
+
+    <script>
+
+    alert('Tugas tidak ditemukan');
+
+    window.location='tugas.php';
+
+    </script>
+
+    ";
+
+    exit;
+
+}
+
+/*
+Cek deadline
+*/
+
+$hari_ini = date("Y-m-d");
+
+if($hari_ini > $data_tugas['deadline']){
+
+    echo "
+
+    <script>
+
+    alert('Batas pengumpulan tugas sudah berakhir');
+
+    window.location='tugas.php';
+
+    </script>
+
+    ";
+
+    exit;
+
+}
+
+/*
+Cek apakah mahasiswa
+sudah pernah upload
+*/
+
+$cek = mysqli_prepare(
+
+$conn,
+
+"SELECT * FROM pengumpulan
+WHERE user_id=?
+AND tugas_id=?"
+
+);
+
+mysqli_stmt_bind_param(
+$cek,
+"ii",
+$user_id,
+$tugas_id
+);
+
+mysqli_stmt_execute($cek);
+
+$hasil = mysqli_stmt_get_result($cek);
+
+if(mysqli_num_rows($hasil)>0){
+
+    echo "
+
+    <script>
+
+    alert('Tugas sudah pernah dikumpulkan');
+
+    window.location='tugas.php';
+
+    </script>
+
+    ";
+
+    exit;
+
+}
+
+/*
+Cek file
+*/
+
+if(empty($_FILES['file_tugas']['name'])){
+
+    echo "
+
+    <script>
+
+    alert('Pilih file terlebih dahulu');
+
+    window.location='tugas.php';
+
+    </script>
+
+    ";
+
+    exit;
+
+}
+
 $file = $_FILES['file_tugas']['name'];
 
 $tmp = $_FILES['file_tugas']['tmp_name'];
 
-$size = $_FILES['file_tugas']['size'];
-
-$error = $_FILES['file_tugas']['error'];
-
 $ekstensi = strtolower(
-pathinfo($file,
-PATHINFO_EXTENSION)
-);
+pathinfo(
+$file,
+PATHINFO_EXTENSION
+));
 
-$allowed = ['pdf'];
+/*
+Format yang diizinkan
+*/
 
-if(!in_array($ekstensi,$allowed)){
+$allowed = [
 
-    die("File harus PDF");
+'pdf',
 
-}
+'doc',
+'docx',
 
-if($size > 2000000){
+'ppt',
+'pptx',
 
-    die("Ukuran file maksimal 2MB");
+'xls',
+'xlsx',
 
-}
+'jpg',
+'jpeg',
+'png',
 
-if($error === 0){
+'zip',
+'rar'
 
-    $namaBaru =
-    uniqid().'.'.$ekstensi;
+];
 
-    move_uploaded_file(
-    $tmp,
-    "../uploads/".$namaBaru
+if(!in_array(
+$ekstensi,
+$allowed
+)){
+
+    echo "
+
+    <script>
+
+    alert(
+    'Format file tidak didukung'
     );
 
-    $query = mysqli_query($conn,
+    window.location='tugas.php';
+
+    </script>
+
+    ";
+
+    exit;
+
+}
+
+/*
+Nama file unik
+*/
+
+$namaBaru =
+time().'_'.
+rand(100,999).'_'.
+$file;
+
+/*
+Upload file
+*/
+
+$upload = move_uploaded_file(
+
+$tmp,
+
+"../uploads/".$namaBaru
+
+);
+
+if($upload){
+
+    $insert = mysqli_prepare(
+
+    $conn,
+
     "INSERT INTO pengumpulan
-    (user_id,tugas_id,file_tugas)
+    (
+    user_id,
+    tugas_id,
+    file_tugas
+    )
 
     VALUES
+    (
+    ?,
+    ?,
+    ?
+    )"
 
-    ('$user_id',
-    '$tugas_id',
-    '$namaBaru')");
+    );
 
-    if($query){
+    mysqli_stmt_bind_param(
 
-        echo "
+    $insert,
 
-        <script>
+    "iis",
 
-        alert('Tugas berhasil diupload');
+    $user_id,
+    $tugas_id,
+    $namaBaru
 
-        window.location='dashboard.php';
+    );
 
-        </script>
+    mysqli_stmt_execute(
+    $insert
+    );
 
-        ";
+    echo "
 
-    }else{
+    <script>
 
-        echo mysqli_error($conn);
+    alert(
+    'Tugas berhasil dikumpulkan'
+    );
 
-    }
+    window.location='dashboard.php';
+
+    </script>
+
+    ";
+
+}else{
+
+    echo "
+
+    <script>
+
+    alert(
+    'Upload gagal'
+    );
+
+    window.location='tugas.php';
+
+    </script>
+
+    ";
 
 }
 

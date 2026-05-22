@@ -1,122 +1,362 @@
+/* =====================
+   GLOBAL
+===================== */
+
 body{
-    font-family: Arial, sans-serif;
-    background-color: #f5f7fb;
+    font-family:Arial,sans-serif;
+    background-color:#f5f7fb;
+    margin:0;
+    padding:0;
+    overflow-x:hidden;
 }
 
+
+/* =====================
+   LAYOUT
+===================== */
+
+.d-flex{
+    display:flex;
+}
+
+.main-content{
+
+    flex:1;
+    width:100%;
+
+    padding:30px;
+
+}
+
+
+/* =====================
+   SIDEBAR
+===================== */
 
 .sidebar,
 .bg-dark{
-    min-height: 100vh;
+
+    width:270px;
+
+    min-height:100vh;
+
+    flex-shrink:0;
+
 }
 
 .bg-dark{
-    background: linear-gradient(
+
+    background:
+    linear-gradient(
     180deg,
-    #212529,
-    #0d6efd
+    #16213e,
+    #2563eb
     ) !important;
+
 }
 
+.sidebar h2,
+.sidebar h3{
+
+    font-weight:bold;
+    margin-bottom:20px;
+
+}
+
+
+/* =====================
+   MENU
+===================== */
+
 .nav-link{
-    border-radius: 10px;
-    transition: 0.3s;
+
+    border-radius:10px;
+
+    padding:12px 15px;
+
+    margin-bottom:8px;
+
+    transition:.3s;
+
+    font-size:18px;
+
 }
 
 .nav-link:hover{
-    background-color: rgba(255,255,255,0.1);
-    padding-left: 15px;
+
+    background-color:
+    rgba(255,255,255,.15);
+
+    padding-left:25px;
+
 }
 
+.nav-link.active{
+
+    background:
+    rgba(255,255,255,.2);
+
+}
+
+
+/* =====================
+   CARD
+===================== */
+
 .card{
-    border: none;
-    border-radius: 18px;
-    overflow: hidden;
+
+    border:none;
+
+    border-radius:20px;
+
+    overflow:hidden;
+
+    transition:.3s;
+
+    background:white;
+
+}
+
+.card:hover{
+
+    transform:
+    translateY(-5px);
+
 }
 
 .card-body{
-    padding: 25px;
+
+    padding:25px;
+
 }
 
 .shadow{
-    box-shadow: 0 5px 20px rgba(0,0,0,0.08) !important;
+
+    box-shadow:
+    0 5px 20px
+    rgba(
+    0,
+    0,
+    0,
+    .08
+    ) !important;
+
 }
 
+
+/* Dashboard angka */
+
+.card h1{
+
+    font-size:50px;
+
+    font-weight:bold;
+
+}
+
+
+/* =====================
+   BUTTON
+===================== */
+
 .btn{
-    border-radius: 10px;
-    padding: 10px 18px;
-    font-weight: 600;
+
+    border-radius:10px;
+
+    padding:10px 18px;
+
+    font-weight:600;
+
 }
 
 .btn-primary{
-    background-color: #0d6efd;
-    border: none;
+
+    background:#0d6efd;
+    border:none;
+
 }
 
 .btn-success{
-    border: none;
+
+    border:none;
+
 }
 
 .btn-danger{
-    border: none;
+
+    border:none;
+
 }
 
 .btn-warning{
-    color: white;
+
+    color:white;
+    border:none;
+
 }
 
-.form-control{
-    border-radius: 10px;
-    padding: 10px;
+.btn-secondary{
+
+    border:none;
+
 }
 
-.form-control:focus{
-    box-shadow: none;
-    border-color: #0d6efd;
+
+/* =====================
+   FORM
+===================== */
+
+.form-control,
+.form-select{
+
+    border-radius:10px;
+
+    padding:10px;
+
 }
+
+.form-control:focus,
+.form-select:focus{
+
+    box-shadow:none;
+
+    border-color:#0d6efd;
+
+}
+
+
+/* =====================
+   TABLE
+===================== */
 
 .table{
-    border-radius: 10px;
-    overflow: hidden;
+
+    background:white;
+
+    border-radius:15px;
+
+    overflow:hidden;
+
 }
 
 .table thead{
-    background-color: #0d6efd;
-    color: white;
-}
 
+    background:#0d6efd;
+    color:white;
+
+}
 
 .table th,
 .table td{
-    vertical-align: middle;
+
+    vertical-align:middle;
+
 }
+
+
+/* =====================
+   LOGIN
+===================== */
 
 .login-card{
-    margin-top: 80px;
+
+    margin-top:80px;
+
 }
 
 
-h1,h2,h3,h4,h5{
-    font-weight: bold;
-}
+/* =====================
+   PROFILE
+===================== */
 
 .profile-img{
-    width: 120px;
-    height: 120px;
-    object-fit: cover;
-    border-radius: 50%;
-    border: 4px solid #0d6efd;
+
+    width:120px;
+    height:120px;
+
+    object-fit:cover;
+
+    border-radius:50%;
+
+    border:4px solid #0d6efd;
+
 }
 
+
+/* =====================
+   BADGE
+===================== */
+
+.badge{
+
+    padding:8px 10px;
+
+    font-size:13px;
+
+    border-radius:8px;
+
+}
+
+
+/* =====================
+   HEADING
+===================== */
+
+h1,
+h2,
+h3,
+h4,
+h5{
+
+    font-weight:bold;
+
+}
+
+
+/* =====================
+   RESPONSIVE
+===================== */
 
 @media(max-width:768px){
 
-    .bg-dark{
-        width: 100% !important;
-        height: auto !important;
-    }
+.d-flex{
 
-    .d-flex{
-        flex-direction: column;
-    }
+    flex-direction:column;
+
+}
+
+.sidebar,
+.bg-dark{
+
+    width:100% !important;
+
+    min-height:auto !important;
+
+}
+
+.main-content{
+
+    width:100%;
+    padding:20px;
+
+}
+
+.card{
+
+    margin-bottom:20px;
+
+}
+
+.nav-link{
+
+    font-size:16px;
+
+}
+
+.card h1{
+
+    font-size:35px;
+
+}
 
 }

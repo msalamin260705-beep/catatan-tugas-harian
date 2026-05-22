@@ -1,90 +1,154 @@
 <?php
 
 include '../middleware/auth.php';
-
-if($_SESSION['role'] != 'admin'){
-
-    header("Location: ../login.php");
-    exit;
-
-}
-
 include '../config/koneksi.php';
 
-$data = mysqli_query($conn,
-"SELECT * FROM tugas");
+$data = mysqli_query(
+$conn,
+"SELECT * FROM tugas ORDER BY id DESC"
+);
 
 include 'layout/header.php';
 include 'layout/sidebar.php';
 
 ?>
 
-<h2>Data Tugas</h2>
+<div class="card shadow">
 
-<a href="tambah_tugas.php"
+<div class="card-body">
+
+<h2 class="mb-4">
+
+Data Tugas
+
+</h2>
+
+<a
+href="tambah_tugas.php"
 class="btn btn-primary mb-3">
 
 Tambah Tugas
 
 </a>
 
+<div class="table-responsive">
+
 <table class="table table-bordered table-striped">
 
-    <tr>
+<thead class="table-dark">
 
-        <th>No</th>
-        <th>Judul</th>
-        <th>Deskripsi</th>
-        <th>Deadline</th>
-        <th>Aksi</th>
+<tr>
 
-    </tr>
+<th>No</th>
 
-    <?php
-    $no = 1;
+<th>Judul</th>
 
-    while($row =
-    mysqli_fetch_assoc($data)){
-    ?>
+<th>Mata Kuliah</th>
 
-    <tr>
+<th>Semester</th>
 
-        <td><?php echo $no++; ?></td>
+<th>Kelas</th>
 
-        <td>
-            <?php echo $row['judul']; ?>
-        </td>
+<th>Deskripsi</th>
 
-        <td>
-            <?php echo $row['deskripsi']; ?>
-        </td>
+<th>Deadline</th>
 
-        <td>
-            <?php echo $row['deadline']; ?>
-        </td>
+<th>Aksi</th>
 
-        <td>
+</tr>
 
-            <a href="edit_tugas.php?id=<?php echo $row['id']; ?>"
-            class="btn btn-warning btn-sm">
+</thead>
 
-                Edit
+<tbody>
 
-            </a>
+<?php
 
-            <a href="hapus_tugas.php?id=<?php echo $row['id']; ?>"
-            class="btn btn-danger btn-sm">
+$no=1;
 
-                Hapus
+while(
+$row=mysqli_fetch_assoc($data)
+){
 
-            </a>
+?>
 
-        </td>
+<tr>
 
-    </tr>
+<td>
 
-    <?php } ?>
+<?php echo $no++; ?>
+
+</td>
+
+<td>
+
+<?php echo htmlspecialchars($row['judul']); ?>
+
+</td>
+
+<td>
+
+<?php echo htmlspecialchars($row['mata_kuliah']); ?>
+
+</td>
+
+<td>
+
+Semester
+<?php echo htmlspecialchars($row['semester']); ?>
+
+</td>
+
+<td>
+
+<?php echo htmlspecialchars($row['kelas']); ?>
+
+</td>
+
+<td>
+
+<?php echo htmlspecialchars($row['deskripsi']); ?>
+
+</td>
+
+<td>
+
+<?php echo htmlspecialchars($row['deadline']); ?>
+
+</td>
+
+<td>
+
+<a
+href="edit_tugas.php?id=<?php echo $row['id']; ?>"
+class="btn btn-warning btn-sm">
+
+Edit
+
+</a>
+
+<a
+href="hapus_tugas.php?id=<?php echo $row['id']; ?>"
+class="btn btn-danger btn-sm"
+onclick="return confirm('Yakin ingin menghapus?')">
+
+Hapus
+
+</a>
+
+</td>
+
+</tr>
+
+<?php } ?>
+
+</tbody>
 
 </table>
+
+</div>
+
+</div>
+
+</div>
 
 <?php include 'layout/footer.php'; ?>
