@@ -223,7 +223,7 @@ $tugas_list = mysqli_query($conn, "
                     </div>
                 </div>
                 <?php endwhile; ?>
-            </div>
+            </div,
         </div>
     </div>
 </div>

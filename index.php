@@ -1,13 +1,17 @@
 <?php
 require_once 'config/db.php';
-require_once 'config/auth.php';
 
-if (isset($_SESSION['user_id']) && !empty($_SESSION['user_id'])) {
+$base = (isset($_SERVER['HTTP_HOST']) &&
+        ($_SERVER['HTTP_HOST'] === 'localhost' ||
+         str_ends_with($_SERVER['HTTP_HOST'], '.test')))
+        ? '/tugas-app' : '';
+
+// Kalau sudah login → redirect ke dashboard
+if (!empty($_SESSION['user_id'])) {
     $role = $_SESSION['user_role'];
-    if ($role == 'admin')        header("Location: pages/admin/dashboard.php");
-    elseif ($role == 'dosen')    header("Location: pages/dosen/dashboard.php");
-    else                         header("Location: pages/mahasiswa/dashboard.php");
-    exit();
+    if ($role == 'admin')      { header("Location: {$base}/pages/admin/dashboard.php"); exit(); }
+    elseif ($role == 'dosen')  { header("Location: {$base}/pages/dosen/dashboard.php"); exit(); }
+    else                       { header("Location: {$base}/pages/mahasiswa/dashboard.php"); exit(); }
 }
 
 $error = "";
@@ -21,21 +25,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if (mysqli_num_rows($result) == 1) {
         $user = mysqli_fetch_assoc($result);
-        $_SESSION['user_id']       = $user['id'];
-        $_SESSION['user_nama']     = $user['nama'];
-        $_SESSION['user_role']     = $user['role'];
-        $_SESSION['user_foto']     = $user['foto'];
 
-        // Simpan semester & kelas untuk mahasiswa
+        $_SESSION['user_id']   = $user['id'];
+        $_SESSION['user_nama'] = $user['nama'];
+        $_SESSION['user_role'] = $user['role'];
+        $_SESSION['user_foto'] = $user['foto'];
+
         if ($user['role'] === 'mahasiswa') {
             $_SESSION['user_semester'] = $user['semester'];
             $_SESSION['user_kelas']    = $user['kelas'];
         }
 
-        if ($user['role'] == 'admin')      header("Location: pages/admin/dashboard.php");
-        elseif ($user['role'] == 'dosen')  header("Location: pages/dosen/dashboard.php");
-        else                               header("Location: pages/mahasiswa/dashboard.php");
-        exit();
+        if ($user['role'] == 'admin')      { header("Location: {$base}/pages/admin/dashboard.php"); exit(); }
+        elseif ($user['role'] == 'dosen')  { header("Location: {$base}/pages/dosen/dashboard.php"); exit(); }
+        else                               { header("Location: {$base}/pages/mahasiswa/dashboard.php"); exit(); }
     } else {
         $error = "Email atau password salah!";
     }
@@ -128,7 +131,7 @@ $setting = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM pengaturan LIMI
         </div>
         <button type="submit" class="btn-login">Masuk</button>
     </form>
-    <div class="register-link">Belum punya akun? <a href="register.php">Daftar</a></div>
+    <div class="register-link">Belum punya akun? <a href="<?= $base ?>/register.php">Daftar</a></div>
     <div class="role-info">
         <p>Akses Untuk</p>
         <div class="role-badges">
