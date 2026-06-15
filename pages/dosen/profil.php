@@ -160,7 +160,7 @@ if (isset($_POST['update'])) {
                         </div>
 
                         <hr class="divider">
-                        <p style="font-size:13px;color:#888;margin-bottom:12px">🔒 Ganti Password <small style="display:inline">(kosongkan jika tidak ingin diganti)</small></p>
+                        <p style="font-size:13px;color:#888;margin-bottom:12px">🔒 Ganti Password <small style="display:inline">(password baru)</small></p>
                         <div class="form-group">
                             <label>Password Baru</label>
                             <input type="password" name="password_baru" placeholder="Minimal 6 karakter">

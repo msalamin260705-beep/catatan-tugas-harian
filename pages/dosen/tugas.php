@@ -162,7 +162,7 @@ $tugas_list = mysqli_query($conn, "
                     <form method="POST">
                         <div class="form-group">
                             <label>Judul Tugas</label>
-                            <input type="text" name="judul" placeholder="Contoh: UTS Pemrograman Web" required>
+                            <input type="text" name="judul" placeholder="tugas" required>
                         </div>
                         <div class="form-group">
                             <label>Kelas</label>
@@ -178,7 +178,7 @@ $tugas_list = mysqli_query($conn, "
                         </div>
                         <div class="form-group">
                             <label>Deskripsi Tugas</label>
-                            <textarea name="deskripsi" placeholder="Jelaskan instruksi tugas..."></textarea>
+                            <textarea name="deskripsi" placeholder="keterangan"></textarea>
                         </div>
                         <div class="form-group">
                             <label>Deadline</label>
